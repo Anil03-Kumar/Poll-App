@@ -1,0 +1,20 @@
+<h2>Available Polls</h2>
+
+<div>
+  @for (poll of polls; track poll.id) {
+    <div class="poll-card">
+      <h3>{{ poll.question }}</h3>
+
+      <div>
+        @for (option of poll.options; track $index) {
+          <div>
+            <button class="">
+            {{ option.optionText }} ({{ option.voteCount }} votes)
+            </button>
+          </div>
+        }
+      </div>
+      
+    </div>
+  }
+</div>

@@ -43,4 +43,5 @@ public class PollController {
 
          pollService.vote(vote.getPollId(),vote.getOptionIndex());
     }
+
 }

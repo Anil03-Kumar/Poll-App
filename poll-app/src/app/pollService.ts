@@ -15,9 +15,9 @@ export class PollService {
 
   createPoll(poll: Poll): Observable<Poll>{
 
-    const postUrl=`${this.baseUrl}/add`;
+    const postUrl=`${this.baseUrl}`;
 
-    return this.http.post<Poll>(postUrl,poll);
+    return this.http.post<Poll>(this.baseUrl,poll);
   }
 
   getPolls():Observable<Poll[]>{

@@ -1,20 +1,53 @@
-<h2>Available Polls</h2>
 
+<div class="container mt-4"></div>
+<h2 class="text-center">Create Poll</h2>
 <div>
+  <input 
+     [(ngModel)] ="newPoll.question"
+     placeholder="poll question"
+     class="form-control"
+     required
+  />
+</div>
+<div class="options-container mb-3">
+  <div class="">
+    @for (option of newPoll.options; track $index) {
+       <input 
+         [(ngModel)] ="option.optionText"
+         placeholder="option"
+         class="form-control"
+         required
+        />
+        <button @ngIf="newPoll.options.length> 2"
+          (click)="removeOption($index)"
+           class="btn btn-danger">
+          remove
+        </button>
+
+    }
+  </div>
+
+</div>
+  <button (click)="addOption()" class="btn btn-primary"> Add Option</button>
+  <button (click)="createPoll()" class="btn btn-primary">Create Poll</button>
+
+<h2 class="mt-4 text-center">Available Polls</h2>
+
+<div class="polls-list">
   @for (poll of polls; track poll.id) {
     <div class="poll-card">
       <h3>{{ poll.question }}</h3>
 
-      <div>
+      <div class="options-list">
         @for (option of poll.options; track $index) {
           <div>
-            <button class="">
+            <button (click)="vote(poll.id!, $index)" class="btn btn-outline-primary me-2 mt-2">
             {{ option.optionText }} ({{ option.voteCount }} votes)
             </button>
           </div>
         }
       </div>
-      
+
     </div>
   }
 </div>

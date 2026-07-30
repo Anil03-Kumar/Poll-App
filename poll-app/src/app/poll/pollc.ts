@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { afterNextRender, Component, OnInit } from '@angular/core';
 
 import { Poll } from '../poll.models';
 import { PollService } from '../pollService';
@@ -12,6 +12,14 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './poll.css',
 })
 export class pollc implements OnInit {
+
+  newPoll: Poll = {
+     question: '',
+     options:[
+      {optionText: '', voteCount:0},
+      {optionText: '', voteCount:0}
+     ]
+  };
 
   polls: Poll[] = [];
 
@@ -31,5 +39,46 @@ export class pollc implements OnInit {
       }
     });
 
+  }
+  addOption(){
+    this.newPoll.options.push({optionText: '', voteCount:0});
+  }
+  createPoll() {
+    console.log(this.newPoll);
+    this.pollService.createPoll(this.newPoll).subscribe({
+       next: ( createdPoll ) => {
+        this.polls.push(createdPoll);
+        this.resetPoll();
+       },
+       error: (error) => {
+        console.error("Error creating polls: ",error);
+       }
+    });
+  }
+  resetPoll(){
+    this.newPoll = {
+     question: '',
+     options:[
+      {optionText: '', voteCount:0},
+      {optionText: '', voteCount:0}
+     ]
+    };
+  }
+  removeOption(index: number): void {
+  this.newPoll.options.splice(index, 1);
+}
+  vote(pollId:number,optionIndex:number){
+    this.pollService.vote(pollId,optionIndex).subscribe({
+      next: () => {
+        const poll=this.polls.find(p=> p.id=== pollId);
+        if(poll){
+          poll.options[optionIndex].voteCount++;
+        }
+       },
+       error: (error) => {
+        console.error("Error vote polls: ",error);
+       }
+    })
+    
   }
 }
